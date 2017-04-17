@@ -2,6 +2,7 @@ package fifteen;
 
 import astar.State;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Field extends State {
 
@@ -43,13 +44,28 @@ public class Field extends State {
         return field[index];
     }
 
+    public int indexOf(int value) {
+        for (int idx = 0; idx < field.length; ++idx) {
+            if (field[idx] == value) return idx;
+        }
+        return -1;
+    }
+
+    public int indexOfX(int value) {
+        return indexOf(value) % size;
+    }
+
+    public int indexOfY(int value) {
+        return indexOf(value) / size;
+    }
+
     public int getSize() {
         return size;
     }
 
     private void swap(int leftIndex, int rightIndex) {
         int temp = field[leftIndex];
-        field[leftIndex] = temp;
+        field[leftIndex] = field[rightIndex];
         field[rightIndex] = temp;
     }
 
@@ -73,10 +89,36 @@ public class Field extends State {
         int estimatedZeroX = zeroIndex % size + xOffset;
         int estimatedZeroY = zeroIndex / size + yOffset;
         if (estimatedZeroX >= 0 && estimatedZeroX < size && estimatedZeroY >= 0 && estimatedZeroY < size) {
-            swap(zeroIndex, estimatedZeroX + estimatedZeroY * size);
+            int newZeroIndex = estimatedZeroX + estimatedZeroY * size;
+            swap(zeroIndex, newZeroIndex);
+            zeroIndex = newZeroIndex;
             return true;
         } else {
             return false;
+        }
+    }
+
+    public void shuffle(int times) {
+        if (times <= 0) {
+            return;
+        }
+        int count = 0;
+        Random generator = new Random(System.currentTimeMillis());
+        while (count != times) {
+            boolean isTurnSuccessful = false;
+            switch (generator.nextInt() % 4) {
+                case 0: isTurnSuccessful = turnDown();
+                        break;
+                case 1: isTurnSuccessful = turnLeft();
+                        break;
+                case 2: isTurnSuccessful = turnRight();
+                        break;
+                case 3: isTurnSuccessful = turnUp();
+                        break;
+            }
+            if (isTurnSuccessful) {
+                ++count;
+            }
         }
     }
 
@@ -101,6 +143,13 @@ public class Field extends State {
 
     @Override
     public String toString() {
-        return Arrays.toString(field);
+        StringBuilder out = new StringBuilder();
+        for (int idx = 0; idx < size * size; ++idx) {
+            if (idx % size == 0) {
+                out.append("\n");
+            }
+            out.append(field[idx] + " ");
+        }
+        return out.toString();
     }
 }

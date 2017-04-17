@@ -14,12 +14,14 @@ public class Astar<S extends State, SH extends StateHandler<S>> {
         this.stateHandler = stateHandler;
     }
 
-    public List<S> doSearch(S from, S to) {
+    public SearchResult<S> doSearch(S from, S to) {
         List<S> openedList = new LinkedList<>();
         List<S> closedList = new LinkedList<>();
         from.clear();
         to.clear();
         openedList.add(from);
+        from.setG(0);
+        from.setH(stateHandler.getHeuristicWeight(from, to));
         while (!openedList.isEmpty()) {
             S current = null;
             int minF = Integer.MAX_VALUE;
@@ -30,7 +32,7 @@ public class Astar<S extends State, SH extends StateHandler<S>> {
                 }
             }
             if (current.equals(to)) {
-                return buildPath(current);
+                return buildPath(current, openedList.size(), closedList.size());
             }
             openedList.remove(current);
             closedList.add(current);
@@ -51,18 +53,28 @@ public class Astar<S extends State, SH extends StateHandler<S>> {
                     neighbour.setParent(current);
                     neighbour.setG(estimatedG);
                     neighbour.setH(stateHandler.getHeuristicWeight(neighbour, to));
+                    openedList.add(neighbour);
                 }
             }
         }
+        return null;
     }
 
-    private List<S> buildPath(S solution) {
-        LinkedList<S> result = new LinkedList<>();
-        S stacked = solution;
+    /*
+    * В данной реализации алгоритма в метод setParent() экземпляра класса S всегда передается экземпляр класса S
+    */
+    @SuppressWarnings("unchecked")
+    private SearchResult<S> buildPath(S solution, int openedListSize, int closedListSize) {
+        SearchResult<S> result = new SearchResult<>();
+        LinkedList<S> stateList = new LinkedList<>();
+        State stacked = solution;
         while (stacked != null) {
-            result.addFirst(stacked);
+            stateList.addFirst((S)stacked);
             stacked = stacked.getParent();
         }
+        result.setOpenedListSize(openedListSize);
+        result.setClosedListSize(closedListSize);
+        result.setStack(stateList);
         return result;
     }
 

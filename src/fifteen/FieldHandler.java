@@ -1,6 +1,7 @@
 package fifteen;
 
 import astar.StateHandler;
+import fifteen.heuristic.calculator.ExtendedHeuristicCalculator;
 import fifteen.heuristic.calculator.HeuristicCalculator;
 import fifteen.heuristic.calculator.SimpleHeuristicCalculator;
 
@@ -15,15 +16,11 @@ public class FieldHandler implements StateHandler<Field> {
     private HeuristicCalculator calculator;
 
     public FieldHandler() {
-        calculator = new SimpleHeuristicCalculator();
+        calculator = new ExtendedHeuristicCalculator();
     }
 
     public void setHeuristicCalculator(HeuristicCalculator calculator) {
         this.calculator = calculator;
-    }
-
-    public boolean isSolvable(Field initial, Field solution) {
-        return false;
     }
 
     @Override

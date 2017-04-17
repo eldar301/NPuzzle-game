@@ -18,10 +18,6 @@ public class State {
         this.g = g;
     }
 
-    int getH() {
-        return h;
-    }
-
     void setH(int h) {
         this.h = h;
     }
