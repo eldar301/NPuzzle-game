@@ -1,14 +1,12 @@
-package fifteen.heuristic.calculator;
+package fifteen.adapter.astar.calculator;
 
-import fifteen.Field;
+import fifteen.adapter.astar.Field;
 
-/**
- * Created by eldar on 16.04.17.
- */
 public class SimpleHeuristicCalculator implements HeuristicCalculator{
 
     /*
      * Возвращает количество несовпадений плиток.
+     * Рекомендуется использовать ExtendedHeuristicCalculator
      */
     @Override
     public int getHeuristicWeight(Field from, Field to) {

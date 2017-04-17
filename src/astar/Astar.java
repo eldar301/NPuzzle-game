@@ -3,9 +3,6 @@ package astar;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by eldar on 16.04.17.
- */
 public class Astar<S extends State, SH extends StateHandler<S>> {
 
     private SH stateHandler;

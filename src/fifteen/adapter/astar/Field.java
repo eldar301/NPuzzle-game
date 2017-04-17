@@ -1,4 +1,4 @@
-package fifteen;
+package fifteen.adapter.astar;
 
 import astar.State;
 import java.util.Arrays;
@@ -148,7 +148,7 @@ public class Field extends State {
             if (idx % size == 0) {
                 out.append("\n");
             }
-            out.append(field[idx] + " ");
+            out.append(field[idx]).append(" ");
         }
         return out.toString();
     }

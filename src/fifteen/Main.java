@@ -2,22 +2,16 @@ package fifteen;
 
 import astar.Astar;
 import astar.SearchResult;
+import fifteen.adapter.astar.Field;
+import fifteen.adapter.astar.FieldHandler;
+import fifteen.game.Npuzzle;
 
-/**
- * Created by Eldar on 17.04.2017.
- */
 public class Main {
     public static void main(String[] args) throws Exception {
-        Field result = new Field(4, new int[]{1, 2, 3, 4,
-                                              5, 6, 7, 8,
-                                              9, 10, 11, 12,
-                                              13, 14, 15, 0});
-        for (int idx = 0; idx < 10; ++idx) {
-            Field initial = new Field(result);
-            initial.shuffle(50);
-            Astar<Field, FieldHandler> astar = new Astar<>(new FieldHandler());
-            SearchResult<Field> searchResult = astar.doSearch(initial, result);
-            System.out.println(searchResult);
+        Npuzzle threeByThree = new Npuzzle(3);
+        threeByThree.generateInitialField();
+        for (Field step : threeByThree.getSolution()) {
+            System.out.println(step);
         }
     }
 }

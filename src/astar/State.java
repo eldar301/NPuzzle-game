@@ -1,8 +1,5 @@
 package astar;
 
-/**
- * Created by eldar on 16.04.17.
- */
 public class State {
 
     private int g;

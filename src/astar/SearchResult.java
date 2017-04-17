@@ -2,9 +2,6 @@ package astar;
 
 import java.util.List;
 
-/**
- * Created by Eldar on 17.04.2017.
- */
 public class SearchResult<S extends State> {
 
     private int openedListSize;

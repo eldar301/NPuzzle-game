@@ -1,16 +1,12 @@
-package fifteen;
+package fifteen.adapter.astar;
 
 import astar.StateHandler;
-import fifteen.heuristic.calculator.ExtendedHeuristicCalculator;
-import fifteen.heuristic.calculator.HeuristicCalculator;
-import fifteen.heuristic.calculator.SimpleHeuristicCalculator;
+import fifteen.adapter.astar.calculator.ExtendedHeuristicCalculator;
+import fifteen.adapter.astar.calculator.HeuristicCalculator;
 
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by eldar on 16.04.17.
- */
 public class FieldHandler implements StateHandler<Field> {
 
     private HeuristicCalculator calculator;
