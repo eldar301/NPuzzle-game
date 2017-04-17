@@ -31,20 +31,21 @@ public class FieldHandler implements StateHandler<Field> {
         List<Field> neighbours = new LinkedList<>();
 
         Field neighbour;
-        neighbour = Field.turnDown(parent);
-        if (neighbour != null) {
+
+        neighbour = new Field(parent);
+        if (neighbour.turnUp()) {
             neighbours.add(neighbour);
         }
-        neighbour = Field.turnLeft(parent);
-        if (neighbour != null) {
+        neighbour = new Field(parent);
+        if (neighbour.turnRight()) {
             neighbours.add(neighbour);
         }
-        neighbour = Field.turnRight(parent);
-        if (neighbour != null) {
+        neighbour = new Field(parent);
+        if (neighbour.turnDown()) {
             neighbours.add(neighbour);
         }
-        neighbour = Field.turnUp(parent);
-        if (neighbour != null) {
+        neighbour = new Field(parent);
+        if (neighbour.turnLeft()) {
             neighbours.add(neighbour);
         }
 
