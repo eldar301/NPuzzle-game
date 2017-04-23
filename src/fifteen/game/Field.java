@@ -1,4 +1,4 @@
-package fifteen.adapter.astar;
+package fifteen.game;
 
 import astar.State;
 import java.util.Arrays;
@@ -40,8 +40,16 @@ public class Field extends State {
         this.zeroIndex = copyFrom.zeroIndex;
     }
 
+    public int[] getField() {
+        return Arrays.copyOf(field, field.length);
+    }
+
     public int getAt(int index) {
         return field[index];
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public int indexOf(int value) {
@@ -59,33 +67,42 @@ public class Field extends State {
         return indexOf(value) / size;
     }
 
-    public int getSize() {
-        return size;
-    }
-
     private void swap(int leftIndex, int rightIndex) {
         int temp = field[leftIndex];
         field[leftIndex] = field[rightIndex];
         field[rightIndex] = temp;
     }
 
-    public boolean turnRight() {
+    boolean turnTo(int num) {
+        int numX = indexOfX(num);
+        int numY = indexOfY(num);
+        int zeroX = zeroIndex % size;
+        int zeroY = zeroIndex / size;
+        return makeTurn(numX - zeroX, numY - zeroY);
+    }
+
+    boolean turnRight() {
         return makeTurn(1, 0);
     }
 
-    public boolean turnUp() {
+    boolean turnUp() {
         return makeTurn(0, -1);
     }
 
-    public boolean turnLeft() {
+    boolean turnLeft() {
         return makeTurn(-1, 0);
     }
 
-    public boolean turnDown() {
+    boolean turnDown() {
         return makeTurn(0, 1);
     }
 
     private boolean makeTurn(int xOffset, int yOffset) {
+        if (Math.abs(xOffset) + Math.abs(yOffset) > 1) {
+            return false;
+        } else if (xOffset == 0 && yOffset == 0) {
+            return true;
+        }
         int estimatedZeroX = zeroIndex % size + xOffset;
         int estimatedZeroY = zeroIndex / size + yOffset;
         if (estimatedZeroX >= 0 && estimatedZeroX < size && estimatedZeroY >= 0 && estimatedZeroY < size) {
@@ -98,7 +115,7 @@ public class Field extends State {
         }
     }
 
-    public void shuffle(int times) {
+    void shuffle(int times) {
         if (times <= 0) {
             return;
         }

@@ -1,8 +1,7 @@
 package fifteen.game;
 
 import astar.Astar;
-import fifteen.adapter.astar.Field;
-import fifteen.adapter.astar.FieldHandler;
+import astar.SearchResult;
 
 import java.util.List;
 
@@ -12,38 +11,90 @@ import java.util.List;
 public class Npuzzle {
 
     private final int fieldSize;
-    private final int shuffleCount = 50;
     private Field currentField;
     private Field finiteField;
 
-    private Astar<Field, FieldHandler> solver;
-
-    public Npuzzle(int fieldSize) {
+    private Npuzzle(int fieldSize, int[] finiteArrangement) {
         this.fieldSize = fieldSize;
-        int[] fieldRow = new int[fieldSize * fieldSize];
-        for (int idx = 0; idx < fieldRow.length; ++idx) {
-            fieldRow[idx] = (idx + 1) % fieldRow.length;
-        }
         try {
-            finiteField = new Field(fieldSize, fieldRow);
+            finiteField = new Field(fieldSize, finiteArrangement);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             e.printStackTrace();
         }
-        solver = new Astar<>(new FieldHandler());
     }
 
-    public Field generateInitialField() {
+    public static Npuzzle createConventional(int size) {
+        int[] finiteArray = new int[size * size];
+        for (int idx = 0; idx < finiteArray.length; ++idx) {
+            finiteArray[idx] = (idx + 1) % finiteArray.length;
+        }
+        return new Npuzzle(size, finiteArray);
+    }
+
+    public static Npuzzle createSpiral(int size) {
+        int[] finiteArray = new int[size * size];
+        final int RIGHT = 1;
+        final int LEFT = -1;
+        final int UP = -size;
+        final int DOWN = size;
+        int dir = RIGHT;
+        int pos = 0;
+        for (int idx = 0; idx < finiteArray.length; ++idx) {
+            finiteArray[pos] = (idx + 1) % finiteArray.length;
+            int nextPos = pos + dir;
+            if (pos == size - 1 || pos == size * size - 1 || pos == size * (size - 1) || finiteArray[nextPos] != 0) {
+                if (dir == RIGHT) {
+                    dir = DOWN;
+                } else if (dir == LEFT) {
+                    dir = UP;
+                } else if (dir == UP) {
+                    dir = RIGHT;
+                } else {
+                    dir = LEFT;
+                }
+            }
+            pos += dir;
+        }
+        return new Npuzzle(size, finiteArray);
+    }
+
+    public void generateInitialField(int shuffleCount) {
         currentField = new Field(finiteField);
         currentField.shuffle(shuffleCount);
-        return currentField;
     }
 
     public Field getCurrentField() {
         return currentField;
     }
 
-    public List<Field> getSolution() {
-        return solver.doSearch(currentField, finiteField).getStack();
+    public boolean turnRight() {
+        return currentField.turnRight();
+    }
+
+    public boolean turnDown() {
+        return currentField.turnDown();
+    }
+
+    public boolean turnLeft() {
+        return currentField.turnLeft();
+    }
+
+    public boolean turnUp() {
+        return currentField.turnUp();
+    }
+
+    public boolean turnTo(int num) {
+        return currentField.turnTo(num);
+    }
+
+    public boolean isSolved() {
+        return finiteField.equals(currentField);
+    }
+
+    public List<Field> solve() {
+        Astar<Field, FieldHandler> solver = new Astar<>(new FieldHandler());
+        SearchResult<Field> solution =  solver.doSearch(currentField, finiteField);
+        currentField = new Field(finiteField);
+        return solution.getStack();
     }
 }

@@ -1,6 +1,6 @@
-package fifteen.adapter.astar.calculator;
+package fifteen.game.calculator;
 
-import fifteen.adapter.astar.Field;
+import fifteen.game.Field;
 
 public interface HeuristicCalculator {
     int getHeuristicWeight(Field from, Field to);

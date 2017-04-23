@@ -1,6 +1,6 @@
-package fifteen.adapter.astar.calculator;
+package fifteen.game.calculator;
 
-import fifteen.adapter.astar.Field;
+import fifteen.game.Field;
 
 public class SimpleHeuristicCalculator implements HeuristicCalculator{
 

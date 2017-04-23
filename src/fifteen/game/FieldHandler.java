@@ -1,8 +1,8 @@
-package fifteen.adapter.astar;
+package fifteen.game;
 
 import astar.StateHandler;
-import fifteen.adapter.astar.calculator.ExtendedHeuristicCalculator;
-import fifteen.adapter.astar.calculator.HeuristicCalculator;
+import fifteen.game.calculator.ExtendedHeuristicCalculator;
+import fifteen.game.calculator.HeuristicCalculator;
 
 import java.util.LinkedList;
 import java.util.List;
